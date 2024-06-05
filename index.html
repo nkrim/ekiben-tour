@@ -30,6 +30,13 @@
       #canvas {
         z-index: -1;
       }
+      #canvasMask, #canvasBuffer {
+        z-index: -100;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+      }
 
       #cityName {
         position: absolute;
@@ -181,9 +188,15 @@
 
       <img id="beefDomannaka" src="img/beef-domannaka.png" width=337 height=360 onload="imgload()" />
       <img id="beefDomannakaCover" src="img/beef-domannaka-cover.png" width=337 height=360 onload="imgload()" />
+      <img id="beefDomannakaBeef" src="img/beef-domannaka-beef.png" width=337 height=360 onload="imgload()" />
+      <img id="beefDomannakaBeefMask" src="img/beef-domannaka-beef-mask.png" width=337 height=360 onload="imgload()" />
+      <img id="beefDomannakaSides" src="img/beef-domannaka-sides.png" width=337 height=360 onload="imgload()" />
+      <img id="beefDomannakaSidesMask" src="img/beef-domannaka-sides-mask.png" width=337 height=360 onload="imgload()" />
     </div>
     <div id="canvasWrapper">
       <canvas id="canvas" width=960 height=640></canvas>
+      <canvas id="canvasMask" width=960 height=640></canvas>
+      <canvas id="canvasBuffer" width=960 height=640></canvas>
       <div id="cityName"><span class="hidden">Tokyo</span></div>
       <div id="backButton" class="hidden"><span onclick="to_map()">Back To Map</span></div>
       <div id="ekibenBios">

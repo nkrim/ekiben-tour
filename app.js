@@ -9,6 +9,12 @@ function imgload() {
 let canvas;
 let canvas_rect;
 let ctx;
+let canvas_mask;
+let canvas_mask_rect;
+let ctx_mask;
+let canvas_buffer;
+let canvas_buffer_rect;
+let ctx_buffer;
 let data = {};
 window.onload = function() {
     num_images = [...document.querySelectorAll("#images img")].length;
@@ -22,12 +28,22 @@ function init() {
     canvas_rect = canvas.getBoundingClientRect();
     ctx = canvas.getContext("2d");
 
+    canvas_mask = document.getElementById("canvasMask");
+    canvas_mask_rect = canvas_mask.getBoundingClientRect();
+    ctx_mask = canvas_mask.getContext("2d", { willReadFrequently: true });
+
+    canvas_buffer = document.getElementById("canvasBuffer");
+    canvas_buffer_rect = canvas_buffer.getBoundingClientRect();
+    ctx_buffer = canvas_buffer.getContext("2d", { willReadFrequently: true });
+
     canvas.addEventListener('mousedown', canvas_mdown, false);
     canvas.addEventListener('mouseup', canvas_mup, false);
     canvas.addEventListener('mousemove', canvas_mmove, false);
     canvas.addEventListener('mouseleave', canvas_mleave, false);
     addEventListener("resize", (event) => {
         canvas_rect = canvas.getBoundingClientRect();
+        canvas_mask_rect = canvas_mask.getBoundingClientRect();
+        canvas_buffer_rect = canvas_buffer.getBoundingClientRect();
     });
 
     init_data();
@@ -73,8 +89,6 @@ function to_ekiben(city) {
     ekiben_city = city;
     ekiben_city_offset_x = canvas.width/2 - city.x;
     ekiben_city_offset_y = canvas.height/2 - city.y;
-
-    console.log(ekiben_city_offset_x)
 
     data.japan.set_pos_goal(data.japan.x + ekiben_city_offset_x, data.japan.y + ekiben_city_offset_y);
     for (let c of data.cities) {
@@ -193,6 +207,7 @@ function update_entities() {
 function draw_entities() {
     ctx.fillStyle = "#003c9e";
     ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+    ctx_mask.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
     for (let i = entities.length - 1; i >= 0; --i) {
         entities[i].draw()
     }
@@ -241,7 +256,7 @@ function canvas_mup(event) {
 let mouse_x = 0;
 let mouse_y = 0;
 let hovered_entity = null;
-document.log_mouse = true;
+document.log_mouse = false;
 function canvas_mmove(event) {
     if (no_interaction)
         return;
@@ -530,6 +545,90 @@ class LidEntity extends Entity {
     }
 }
 
+class IngredientEntity extends Entity {
+    lum = 100;
+    lum_goal = 100;
+    lum_speed = 100.0;
+
+    constructor(z, image_id) {
+        const x = canvas.width/2;
+        const y = canvas.height/2;
+        super(x, y, z, image_id);
+    }
+
+    update(tdelt) {
+        if (this.lum > this.lum_goal) {
+            this.lum = Math.max(this.lum_goal, this.lum - this.lum_speed * tdelt);
+        } else if (this.lum < this.lum_goal) {
+            this.lum = Math.min(this.lum_goal, this.lum + this.lum_speed * tdelt);
+        }
+
+        super.update(tdelt);
+    }
+
+    draw() {
+        ctx_buffer.clearRect(0, 0, canvas.width, canvas.height);
+        const w = this.image.width * this.scale;
+        const h = this.image.height * this.scale;
+        ctx_buffer.filter = `brightness(${this.lum}%)`
+        ctx_buffer.drawImage(this.image, this.x - w/2, this.y - h/2, w, h);
+        ctx.drawImage(canvas_buffer, 0, 0);
+    }
+}
+
+class MaskEntity extends Entity {
+    entity_i;
+    value;
+
+    constructor(z, image_id, entity_i, value) {
+        const x = canvas.width/2;
+        const y = canvas.height/2;
+        super(x, y, z, image_id);
+        this.entity_i = entity_i;
+        this.value = value;
+    }
+
+    is_hovering(x, y) {
+        return ctx_mask.getImageData(x, y, 1, 1).data[0] === this.value;
+    }
+
+    hover() {
+        if (state !== States.EKIBEN)
+            return false;
+
+        let es = ekiben_city.ekiben_entities;
+        for (let i=0; i < es.length; ++i) {
+            if (i !== this.entity_i && es[i] instanceof IngredientEntity) {
+                console.log(i);
+                console.log(es[i]);
+                es[i].lum_goal = 75;
+            }
+        }
+        return true;
+    }
+    unhover() {
+        let es = ekiben_city.ekiben_entities;
+        for (let i=0; i < es.length; ++i) {
+            if (es[i] instanceof IngredientEntity) {
+                es[i].lum_goal = 100;
+            }
+        }
+    }
+
+    click() {
+        return true;
+    }
+    unclick() {
+        
+    }
+
+    draw() {
+        const w = this.image.width * this.scale;
+        const h = this.image.height * this.scale;
+        ctx_mask.drawImage(this.image, this.x - w/2, this.y - h/2, w, h);
+    }
+}
+
 
 function init_data() {
     data = {
@@ -538,8 +637,12 @@ function init_data() {
 
         'cities': [
             new CityEntity(540, 312, 100, 'Yamagata', [
-                new LidEntity(2100, 'beefDomannakaCover', 'beefDomannakaBio'),
-                new Entity(canvas.width/2, canvas.height/2, 2000, 'beefDomannaka')
+                new LidEntity(2200, 'beefDomannakaCover', 'beefDomannakaBio'),
+                new IngredientEntity(2000, 'beefDomannaka'),
+                new IngredientEntity(2010, 'beefDomannakaBeef'),
+                new MaskEntity(2110, 'beefDomannakaBeefMask', 2, 50),
+                new IngredientEntity(2020, 'beefDomannakaSides'),
+                new MaskEntity(2120, 'beefDomannakaSidesMask', 4, 100),
             ]),
         ],
     };
