@@ -132,7 +132,6 @@ function to_map() {
     document.getElementById('backButton').classList.add('hidden');
     data.shin.alpha_goal = 0;
     for (let e of ekiben_city.ekiben_entities) {
-        entities.push(e);
         e.y_goal = canvas.height + e.height/2;
     }
     for (let d of document.querySelectorAll("#ekibenBios div")) {
@@ -152,6 +151,11 @@ function to_map() {
         setTimeout(() => {
             delete_entity(data.shin.id);
             for (let e of ekiben_city.ekiben_entities) {
+                if (e instanceof IngredientEntity)
+                    e.lum = e.lum_goal = 100;
+                else if (e instanceof MaskEntity)
+                    e.unclick();
+
                 delete_entity(e.id);
             }
 
@@ -184,6 +188,7 @@ function sort_entities() {
 }
 
 function delete_entity(id) {
+    console.log(`delete ${id}`)
     for (let i = 0; i < entities.length; ++i) {
         if (entities[i].id === id) {
             entities.splice(i, 1);
@@ -576,16 +581,19 @@ class IngredientEntity extends Entity {
     }
 }
 
+let active_mask = null;
 class MaskEntity extends Entity {
     entity_i;
     value;
+    ingredient;
 
-    constructor(z, image_id, entity_i, value) {
+    constructor(z, image_id, entity_i, value, ingredient_id) {
         const x = canvas.width/2;
         const y = canvas.height/2;
         super(x, y, z, image_id);
         this.entity_i = entity_i;
         this.value = value;
+        this.ingredient = document.getElementById(ingredient_id);
     }
 
     is_hovering(x, y) {
@@ -597,17 +605,26 @@ class MaskEntity extends Entity {
             return false;
 
         let es = ekiben_city.ekiben_entities;
-        for (let i=0; i < es.length; ++i) {
-            if (i !== this.entity_i && es[i] instanceof IngredientEntity) {
-                console.log(i);
-                console.log(es[i]);
-                es[i].lum_goal = 75;
+        es[this.entity_i].lum_goal = 100;
+        if (!active_mask) {
+            for (let i=0; i < es.length; ++i) {
+                if (i !== this.entity_i
+                    && i !== active_mask?.entity_i
+                    && es[i] instanceof IngredientEntity)
+                {
+                    es[i].lum_goal = 75;
+                }
             }
         }
         return true;
     }
     unhover() {
         let es = ekiben_city.ekiben_entities;
+        if (active_mask) {
+            if (active_mask !== this)
+                es[this.entity_i].lum_goal = 75;
+            return;
+        }
         for (let i=0; i < es.length; ++i) {
             if (es[i] instanceof IngredientEntity) {
                 es[i].lum_goal = 100;
@@ -616,10 +633,22 @@ class MaskEntity extends Entity {
     }
 
     click() {
+        if (active_mask !== this) {
+            active_mask?.unclick();
+            this.hover();
+            active_mask = this;
+            this.ingredient.classList.remove('docked');
+        } else {
+            this.unclick();
+        }
         return true;
     }
     unclick() {
-        
+        if (active_mask === this) {
+            active_mask = null;
+            this.unhover();
+            this.ingredient.classList.add('docked');
+        }
     }
 
     draw() {
@@ -640,9 +669,9 @@ function init_data() {
                 new LidEntity(2200, 'beefDomannakaCover', 'beefDomannakaBio'),
                 new IngredientEntity(2000, 'beefDomannaka'),
                 new IngredientEntity(2010, 'beefDomannakaBeef'),
-                new MaskEntity(2110, 'beefDomannakaBeefMask', 2, 50),
+                new MaskEntity(2110, 'beefDomannakaBeefMask', 2, 50, 'beefDomannakaBeefBio'),
                 new IngredientEntity(2020, 'beefDomannakaSides'),
-                new MaskEntity(2120, 'beefDomannakaSidesMask', 4, 100),
+                new MaskEntity(2120, 'beefDomannakaSidesMask', 4, 100, 'beefDomannakaSidesBio'),
             ]),
         ],
     };
