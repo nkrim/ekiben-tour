@@ -25,6 +25,7 @@
         display: inline-block;
         position: relative;
         margin: auto;
+        margin-top: 50px;
       }
 
       #canvas {
@@ -211,6 +212,18 @@
       <img id="beefDomannakaBeefMask" src="img/beef-domannaka-beef-mask.png" width=337 height=360 onload="imgload()" />
       <img id="beefDomannakaSides" src="img/beef-domannaka-sides.png" width=337 height=360 onload="imgload()" />
       <img id="beefDomannakaSidesMask" src="img/beef-domannaka-sides-mask.png" width=337 height=360 onload="imgload()" />
+
+      <img id="makunouchi" src="img/makunouchi.png" width=303 height=360 onload="imgload()" />
+      <img id="makunouchiCover" src="img/makunouchi-cover.png" width=303 height=360 onload="imgload()" />
+      <img id="makunouchiRice" src="img/makunouchi-rice.png" width=303 height=360 onload="imgload()" />
+      <img id="makunouchiRiceMask" src="img/makunouchi-rice-mask.png" width=303 height=360 onload="imgload()" />
+      <img id="makunouchiSides" src="img/makunouchi-sides.png" width=303 height=360 onload="imgload()" />
+      <img id="makunouchiSidesMask" src="img/makunouchi-sides-mask.png" width=303 height=360 onload="imgload()" />
+
+      <img id="hippari" src="img/hippari.png" width=300 height=372 onload="imgload()" />
+      <img id="hippariCover" src="img/hippari-cover.png" width=300 height=372 onload="imgload()" />
+      <img id="hippariOcto" src="img/hippari-octo.png" width=300 height=372 onload="imgload()" />
+      <img id="hippariOctoMask" src="img/hippari-octo-mask.png" width=300 height=372 onload="imgload()" />
     </div>
     <div id="canvasWrapper">
       <canvas id="canvas" width=960 height=640></canvas>
@@ -234,15 +247,64 @@
               <br/><br/>
               <a href="https://japanrailandtravel.com/interests/food-shopping/ekiben/gyuniku-domannaka/" target="_blank">source</a>
         </div>
+        <div id="makunouchiBio" class="docked">
+          <h2>Gindara Makunouchi</h2>
+          <p> Available at Tokyo Station for 1,380 yen.
+              <br/><br/>
+              <i>Makunouchi bento</i> means "between-act bento", referring to
+              bento's origins as a meal for theater-goers. Now, makunouchi
+              generally refers to larger bento that attempt to contain every
+              flavor and ingredient that is quintessential to Japanese taste.
+              You can find some form of makunouchi at nearly every railstation
+              in Japan.
+              <br/><br/>
+              This particular bento's unique feature is <i>gindara</i> or
+              sablefish, served grilled and seasoned with a yuzu-miso sauce.
+              <br/><br/>
+              <a href="https://grapeejapan.com/191895" target="_blank">source</a>
+        </div>
+        <div id="hippariBio" class="docked">
+          <h2>Hipparidako-meshi</h2>
+          <p> Available at Nishi-Akashi Station for 1,080 yen.
+              <br/><br/>
+              This famous bento features octopus, conger eel, and seasonal
+              vegetables packaged in a special clay pot made to look like
+              one of the barrel-shaped octopus traps traditionally used in
+              Japan.
+              <br/><br/>
+              The name <i>hipparidako-meshi</i> is an expression, literally 
+              meaning "pulled octopus", which is used to refer to someone who is
+              so popular that they continually receive invitations and offers
+              like an octopus beingd pulled in different directions.
+              <br/><br/>
+              <a href="https://grapeejapan.com/191895" target="_blank">source</a>
+        </div>
       </div>
+
       <div id="ekibenIngredients">
-        <div id="beefDomannakaBeefBio" class="docked">
-          <p>Minced and sauteed beef over rice.</p>
-        </div>
-        <div id="beefDomannakaSidesBio" class="docked">
-          <p>Assortment of small sides, including nori, fish cake, egg omelet,
-             and pickled ginger.</p>
-        </div>
+        <div id="beefDomannakaBeefBio" class="docked"><p>
+          Minced and sauteed beef over rice.
+        </p></div>
+        <div id="beefDomannakaSidesBio" class="docked"><p>
+          Assortment of small sides, including seaweed (nori), fish cake,
+          egg omelet (tamago), and pickled ginger.
+        </p></div>
+
+        <div id="makunouchiRiceBio" class="docked"><p>
+          A large portion of rice featuring a pickled plum in the center,
+          evoking the Japanese flag. On the side is some pickled
+          seaweed (nori).
+        </p></div>
+        <div id="makunouchiSidesBio" class="docked"><p>
+          <i>Gindara</i>, or sablefish, alongside omelet (tamago), kamaboko fish cakes,
+          pickled eggplant, fried chicken with yuzu pepper seasoning, and
+          soy-mirin seasoned assorted vegetables (butterbur, burdock, carrot,
+          shiitake mushroom, lotus root, pumpkin, peas, konnyaku and taro root).
+        </p></div>
+
+        <div id="hippariOctoBio" class="docked"><p>
+          Octopus (tako), conger eel (unagi), and seasonal vegetables.
+        </p></div>
       </div>
     </div>
   </body>

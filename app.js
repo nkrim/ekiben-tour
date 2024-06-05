@@ -188,7 +188,6 @@ function sort_entities() {
 }
 
 function delete_entity(id) {
-    console.log(`delete ${id}`)
     for (let i = 0; i < entities.length; ++i) {
         if (entities[i].id === id) {
             entities.splice(i, 1);
@@ -581,6 +580,7 @@ class IngredientEntity extends Entity {
     }
 }
 
+const dim_lum = 60;
 let active_mask = null;
 class MaskEntity extends Entity {
     entity_i;
@@ -612,7 +612,7 @@ class MaskEntity extends Entity {
                     && i !== active_mask?.entity_i
                     && es[i] instanceof IngredientEntity)
                 {
-                    es[i].lum_goal = 75;
+                    es[i].lum_goal = dim_lum;
                 }
             }
         }
@@ -622,7 +622,7 @@ class MaskEntity extends Entity {
         let es = ekiben_city.ekiben_entities;
         if (active_mask) {
             if (active_mask !== this)
-                es[this.entity_i].lum_goal = 75;
+                es[this.entity_i].lum_goal = dim_lum;
             return;
         }
         for (let i=0; i < es.length; ++i) {
@@ -672,6 +672,20 @@ function init_data() {
                 new MaskEntity(2110, 'beefDomannakaBeefMask', 2, 50, 'beefDomannakaBeefBio'),
                 new IngredientEntity(2020, 'beefDomannakaSides'),
                 new MaskEntity(2120, 'beefDomannakaSidesMask', 4, 100, 'beefDomannakaSidesBio'),
+            ]),
+            new CityEntity(520, 390, 101, 'Tokyo', [
+                new LidEntity(2200, 'makunouchiCover', 'makunouchiBio'),
+                new IngredientEntity(2000, 'makunouchi'),
+                new IngredientEntity(2010, 'makunouchiRice'),
+                new MaskEntity(2110, 'makunouchiRiceMask', 2, 50, 'makunouchiRiceBio'),
+                new IngredientEntity(2020, 'makunouchiSides'),
+                new MaskEntity(2120, 'makunouchiSidesMask', 4, 100, 'makunouchiSidesBio'),
+            ]),
+            new CityEntity(400, 416, 102, 'Akashi', [
+                new LidEntity(2200, 'hippariCover', 'hippariBio'),
+                new IngredientEntity(2000, 'hippari'),
+                new IngredientEntity(2010, 'hippariOcto'),
+                new MaskEntity(2110, 'hippariOctoMask', 2, 50, 'hippariOctoBio'),
             ]),
         ],
     };
