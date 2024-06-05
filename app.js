@@ -341,6 +341,7 @@ function ungrab() {
     }
 }
 
+
 let entity_id_counter = 0;
 const pos_snap = 0.5;
 class Entity {
