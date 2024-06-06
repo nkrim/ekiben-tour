@@ -36,6 +36,8 @@ function init() {
     canvas_buffer_rect = canvas_buffer.getBoundingClientRect();
     ctx_buffer = canvas_buffer.getContext("2d", { willReadFrequently: true });
 
+    pull_the_lid = document.getElementById('pullTheLid');
+
     canvas.addEventListener('mousedown', canvas_mdown, false);
     canvas.addEventListener('mouseup', canvas_mup, false);
     canvas.addEventListener('mousemove', canvas_mmove, false);
@@ -78,6 +80,8 @@ let state = States.MAP;
 let ekiben_city = null;
 let ekiben_city_offset_x = 0;
 let ekiben_city_offset_y = 0;
+let pull_the_lid = null;
+let pull_the_lid_timeout = null;
 function to_ekiben(city) {
     if (state !== States.MAP)
         return;
@@ -116,6 +120,9 @@ function to_ekiben(city) {
                 state = States.EKIBEN_COVERED;
                 no_interaction = false;
                 document.getElementById('backButton').classList.remove('hidden');
+                pull_the_lid_timeout = setTimeout(() => {
+                    pull_the_lid.classList.remove('docked');
+                }, 5000);
             }, 500);
         }, 1500);
     }, 500);
@@ -518,6 +525,8 @@ class LidEntity extends Entity {
                 state = States.EKIBEN;
                 this.alpha_goal = 0;
                 this.bio.classList.remove('docked');
+                clearTimeout(pull_the_lid_timeout);
+                pull_the_lid.classList.add('docked');
                 setTimeout(() => delete_entity(this.id), 1500);
             }
         }
@@ -731,5 +740,5 @@ function init_data() {
     };
 
     // Adjustments
-    shin.height = canvas.height;
+    data.shin.height = canvas.height;
 }
