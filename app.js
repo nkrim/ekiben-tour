@@ -62,7 +62,7 @@ function init() {
         for (c of data.cities) {
             c.alpha_goal = 1;
         }
-    }, 1000);
+    }, 750);
 
     var timer = setInterval(frame, 1000/60);
 }
@@ -686,6 +686,46 @@ function init_data() {
                 new IngredientEntity(2000, 'hippari'),
                 new IngredientEntity(2010, 'hippariOcto'),
                 new MaskEntity(2110, 'hippariOctoMask', 2, 50, 'hippariOctoBio'),
+            ]),
+            new CityEntity(541, 252, 103, 'Odate', [
+                new LidEntity(2200, 'hinaijidoriCover', 'hinaijidoriBio'),
+                new IngredientEntity(2000, 'hinaijidori'),
+                new IngredientEntity(2010, 'hinaijidoriChicken'),
+                new MaskEntity(2110, 'hinaijidoriChickenMask', 2, 50, 'hinaijidoriChickenBio'),
+                new IngredientEntity(2020, 'hinaijidoriSides'),
+                new MaskEntity(2120, 'hinaijidoriSidesMask', 4, 100, 'hinaijidoriSidesBio'),
+            ]),
+            new CityEntity(548, 204, 104, 'Mori', [
+                new LidEntity(2200, 'ikameshiCover', 'ikameshiBio'),
+                new IngredientEntity(2000, 'ikameshi'),
+                new IngredientEntity(2010, 'ikameshiSquid'),
+                new MaskEntity(2110, 'ikameshiSquidMask', 2, 50, 'ikameshiSquidBio'),
+            ]),
+            new CityEntity(504, 362, 105, 'Annaka', [
+                new LidEntity(2200, 'kamameshiCover', 'kamameshiBio'),
+                new IngredientEntity(2000, 'kamameshi'),
+                new IngredientEntity(2010, 'kamameshiFood'),
+                new MaskEntity(2110, 'kamameshiFoodMask', 2, 50, 'kamameshiFoodBio'),
+            ]),
+            new CityEntity(515, 316, 106, 'Niigata', [
+                new LidEntity(2200, 'chirashiCover', 'chirashiBio'),
+                new IngredientEntity(2000, 'chirashi'),
+                new IngredientEntity(2010, 'chirashiTamago'),
+                new MaskEntity(2110, 'chirashiTamagoMask', 2, 50, 'chirashiTamagoBio'),
+                new IngredientEntity(2020, 'chirashiFish'),
+                new MaskEntity(2120, 'chirashiFishMask', 4, 100, 'chirashiFishBio'),
+            ]),
+            new CityEntity(565, 305, 107, 'Sendai', [
+                new LidEntity(2200, 'omotenashiCover', 'omotenashiBio'),
+                new IngredientEntity(2000, 'omotenashi'),
+                new IngredientEntity(2010, 'omotenashiOnigiri'),
+                new MaskEntity(2110, 'omotenashiOnigiriMask', 2, 50, 'omotenashiOnigiriBio'),
+                new IngredientEntity(2020, 'omotenashiTamago'),
+                new MaskEntity(2120, 'omotenashiTamagoMask', 4, 100, 'omotenashiTamagoBio'),
+                new IngredientEntity(2030, 'omotenashiTempura'),
+                new MaskEntity(2130, 'omotenashiTempuraMask', 6, 150, 'omotenashiTempuraBio'),
+                new IngredientEntity(2040, 'omotenashiSides'),
+                new MaskEntity(2140, 'omotenashiSidesMask', 8, 200, 'omotenashiSidesBio'),
             ]),
         ],
     };
