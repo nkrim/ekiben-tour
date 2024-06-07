@@ -100,17 +100,6 @@ function win_resize(event) {
     canvas_rect = canvas.getBoundingClientRect();
     canvas_mask_rect = canvas_mask.getBoundingClientRect();
     canvas_buffer_rect = canvas_buffer.getBoundingClientRect();
-
-    console.log(window.innerWidth);
-    // if (window.innerWidth < canvas.width + 300 + 10) {
-    //     const val = (window.innerWidth - canvas.width)/2 - 10;
-    //     console.log('~', val);
-    //     document.getElementById('ekibenBios').style.left = `-${val}px`;
-    //     document.getElementById('ekibenIngredients').style.right = `-${val}px`;
-    // } else {
-    //     document.getElementById('ekibenBios').style.left = '';
-    //     document.getElementById('ekibenIngredients').style.right = '';
-    // }
 }
 
 const States = Object.freeze({
@@ -272,7 +261,6 @@ let touch_x = 0;
 let touch_y = 0;
 function convert_touch_event(event) {
     event.preventDefault();
-    console.log(event);
     if (event.type === 'touchstart' || event.type === 'touchmove') {
         touch_x = parseInt(event.touches[0].clientX);
         touch_y = parseInt(event.touches[0].clientY);
@@ -320,7 +308,6 @@ function canvas_mup(event) {
     canvas_mmove(event);
     if (Date.now() - mouse_down_time <= MOUSE_CLICK_TIME) {
         if (hovered_entity === mouse_down_entity) {
-            console.log('hi', event);
             hovered_entity.click?.();
         }
     } else {
@@ -600,16 +587,6 @@ class LidEntity extends Entity {
 
     hover() { return true; }
 
-    // click() {
-    //     if (grab(this)) {
-    //         this.old_z = this.z;
-    //         this.z = 1000000;
-    //         z_updated = true;
-    //         return true;
-    //     }
-    //     return false;
-    // }
-
     unclick() {
         if (state !== States.EKIBEN_COVERED)
             return;
@@ -706,7 +683,6 @@ class MaskEntity extends Entity {
     }
 
     click() {
-        console.log('clicked');
         if (active_mask !== this) {
             active_mask?.unclick();
             this.hover();
