@@ -70,6 +70,10 @@ function init() {
     canvas.addEventListener('mouseup', canvas_mup, false);
     canvas.addEventListener('mousemove', canvas_mmove, false);
     canvas.addEventListener('mouseleave', canvas_mleave, false);
+    canvas.addEventListener('touchstart', convert_touch_event, false);
+    canvas.addEventListener('touchend', convert_touch_event, false);
+    canvas.addEventListener('touchmove', convert_touch_event, false);
+    canvas.addEventListener('touchcancel', convert_touch_event, false);
     addEventListener("resize", (event) => {
         canvas_rect = canvas.getBoundingClientRect();
         canvas_mask_rect = canvas_mask.getBoundingClientRect();
@@ -251,6 +255,25 @@ function draw_entities() {
     }
 }
 
+let touch_x = 0;
+let touch_y = 0;
+function convert_touch_event(event) {
+    event.preventDefault();
+    console.log(event);
+    if (event.type === 'touchstart' || event.type === 'touchmove') {
+        touch_x = parseInt(event.touches[0].clientX);
+        touch_y = parseInt(event.touches[0].clientY);
+    }
+    event.clientX = touch_x;
+    event.clientY = touch_y;
+    switch (event.type) {
+        case 'touchstart':  canvas_mdown(event); break;
+        case 'touchmove':   canvas_mmove(event); break;
+        case 'touchend':    canvas_mup(event); break;
+        case 'touchcancel': canvas_mleave(event); break;
+    }
+}
+
 const MOUSE_CLICK_TIME = 150;
 let mouse_down_index = 0;
 let mouse_down_time = -1000000;
@@ -263,7 +286,7 @@ function canvas_mdown(event) {
 
     mouse_down_time = Date.now();
     mouse_down_x = event.clientX - canvas_rect.left;
-    mouse_down_y = event.clientY - canvas_rect.top;;
+    mouse_down_y = event.clientY - canvas_rect.top;
     canvas_mmove(event);
     mouse_down_entity = hovered_entity;
     if (mouse_down_entity?.grabbable) {
@@ -284,6 +307,7 @@ function canvas_mup(event) {
     canvas_mmove(event);
     if (Date.now() - mouse_down_time <= MOUSE_CLICK_TIME) {
         if (hovered_entity === mouse_down_entity) {
+            console.log('hi', event);
             hovered_entity.click?.();
         }
     } else {
@@ -669,6 +693,7 @@ class MaskEntity extends Entity {
     }
 
     click() {
+        console.log('clicked');
         if (active_mask !== this) {
             active_mask?.unclick();
             this.hover();
