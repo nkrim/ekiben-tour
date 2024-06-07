@@ -169,6 +169,9 @@ function to_map() {
     state = States.TRANSITION;
     cursor_default();
 
+    clearTimeout(pull_the_lid_timeout);
+    pull_the_lid.classList.add('docked');
+
     document.getElementById('backButton').classList.add('hidden');
     data.shin.alpha_goal = 0;
     for (let e of ekiben_city.ekiben_entities) {
