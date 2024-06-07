@@ -74,11 +74,7 @@ function init() {
     canvas.addEventListener('touchend', convert_touch_event, false);
     canvas.addEventListener('touchmove', convert_touch_event, false);
     canvas.addEventListener('touchcancel', convert_touch_event, false);
-    addEventListener("resize", (event) => {
-        canvas_rect = canvas.getBoundingClientRect();
-        canvas_mask_rect = canvas_mask.getBoundingClientRect();
-        canvas_buffer_rect = canvas_buffer.getBoundingClientRect();
-    });
+    addEventListener("resize", win_resize, false);
 
     init_data();
 
@@ -98,6 +94,23 @@ function init() {
     }, 1000);
 
     var timer = setInterval(frame, 1000/60);
+}
+
+function win_resize(event) {
+    canvas_rect = canvas.getBoundingClientRect();
+    canvas_mask_rect = canvas_mask.getBoundingClientRect();
+    canvas_buffer_rect = canvas_buffer.getBoundingClientRect();
+
+    console.log(window.innerWidth);
+    // if (window.innerWidth < canvas.width + 300 + 10) {
+    //     const val = (window.innerWidth - canvas.width)/2 - 10;
+    //     console.log('~', val);
+    //     document.getElementById('ekibenBios').style.left = `-${val}px`;
+    //     document.getElementById('ekibenIngredients').style.right = `-${val}px`;
+    // } else {
+    //     document.getElementById('ekibenBios').style.left = '';
+    //     document.getElementById('ekibenIngredients').style.right = '';
+    // }
 }
 
 const States = Object.freeze({
