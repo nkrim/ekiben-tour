@@ -2,8 +2,14 @@ let loaded_images = 0;
 let num_images = 0;
 function imgload() {
     loaded_images++;
-    if (num_images !== 0 && loaded_images == num_images && ready_to_begin)
-        init();
+    if (num_images !== 0 && loaded_images == num_images) {
+        loading_done();
+    }
+}
+function loading_done() {
+    begin_button = document.getElementById('beginButton');
+    begin_button.children[0].classList.remove('loading');
+    begin_button.children[0].textContent = 'Begin!';
 }
 
 let canvas;
@@ -26,17 +32,13 @@ window.onload = function() {
     begin_button = document.getElementById('beginButton');
     pull_the_lid = document.getElementById('pullTheLid');
 
-    beginButton.classList.remove('hidden');
+    if (num_images === loaded_images) {
+        loading_done();
+    }
 };
 
 function begin() {
-    ready_to_begin = true;
-    if (num_images === loaded_images) {
-        init();
-    } else {
-        begin_button.textContent = 'Loading images...';
-        begin_button.classList.add('loading');
-    }
+    init();
 }
 
 function init() {
