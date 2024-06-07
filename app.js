@@ -2,7 +2,7 @@ let loaded_images = 0;
 let num_images = 0;
 function imgload() {
     loaded_images++;
-    if (num_images !== 0 && loaded_images == num_images)
+    if (num_images !== 0 && loaded_images == num_images && ready_to_begin)
         init();
 }
 
@@ -15,15 +15,34 @@ let ctx_mask;
 let canvas_buffer;
 let canvas_buffer_rect;
 let ctx_buffer;
+let title_text;
+let begin_button;
+let ready_to_begin
 let data = {};
 window.onload = function() {
     num_images = [...document.querySelectorAll("#images img")].length;
 
-    if (num_images == loaded_images)
-        init();
+    title_text = document.getElementById('title');
+    begin_button = document.getElementById('beginButton');
+    pull_the_lid = document.getElementById('pullTheLid');
+
+    beginButton.classList.remove('hidden');
 };
 
+function begin() {
+    ready_to_begin = true;
+    if (num_images === loaded_images) {
+        init();
+    } else {
+        begin_button.textContent = 'Loading images...';
+        begin_button.classList.add('loading');
+    }
+}
+
 function init() {
+    title_text.classList.add('hidden');
+    begin_button.classList.add('hidden');
+
     canvas = document.getElementById("canvas");
     canvas_rect = canvas.getBoundingClientRect();
     ctx = canvas.getContext("2d");
@@ -35,8 +54,6 @@ function init() {
     canvas_buffer = document.getElementById("canvasBuffer");
     canvas_buffer_rect = canvas_buffer.getBoundingClientRect();
     ctx_buffer = canvas_buffer.getContext("2d", { willReadFrequently: true });
-
-    pull_the_lid = document.getElementById('pullTheLid');
 
     canvas.addEventListener('mousedown', canvas_mdown, false);
     canvas.addEventListener('mouseup', canvas_mup, false);
@@ -54,17 +71,16 @@ function init() {
 
     entities.push(data.japan);
     data.japan.alpha = 0;
-    for (c of data.cities) {
-        entities.push(c);
-        c.alpha = 0;
-        c.alpha_goal = 0;
-    }
+    data.japan.alpha_speed = 0.5;
 
+    last_frame = Date.now();
     setTimeout(() => {
         for (c of data.cities) {
-            c.alpha_goal = 1;
+            entities.push(c);
+            c.alpha = 0;
         }
-    }, 750);
+        z_updated = true;
+    }, 1000);
 
     var timer = setInterval(frame, 1000/60);
 }
@@ -670,7 +686,7 @@ class MaskEntity extends Entity {
 
 function init_data() {
     data = {
-        'japan': new Entity(canvas.width/2, canvas.height/2, 0, 'japan'),
+        'japan': new Entity(canvas.width/2, canvas.height/2, 1, 'japan'),
         'shin':  new Entity(canvas.width/2, canvas.height/2, 1000, 'shin'),
 
         'cities': [

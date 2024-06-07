@@ -29,7 +29,7 @@
         display: inline-block;
         position: relative;
         margin: auto;
-        margin-top: 50px;
+        margin-top: 80px;
       }
 
       #canvas {
@@ -43,7 +43,15 @@
         right: 0;
       }
 
-      #cityName {
+      #title {
+        opacity: 1;
+        visibility: visible;
+        transition: opacity 2s, visibility 0s 2.5s;
+      }
+      #title.hidden {
+        opacity: 0;
+      }
+      #cityName, #title {
         position: absolute;
         top: 0;
         left: 0;
@@ -51,7 +59,7 @@
         text-align: center;
         pointer-events: none;
       }
-      #cityName span {
+      #cityName span, #title span {
         background: #003c9e;
         color: #fbf236;
         font-size: 48px;
@@ -69,14 +77,17 @@
         box-shadow: inset 0px 0px 4px 2px #faae37;
       }
 
-      #backButton {
+      #backButton, #beginButton {
         position: absolute;
         top: 100%;
         left: 0;
         right: 0;
         text-align: center;
       }
-      #backButton span {
+      #beginButton {
+        top: 50%;
+      }
+      #backButton span, #beginButton span {
         background: #003c9e;
         color: #fbf236;
         font-size: 24px;
@@ -96,12 +107,16 @@
         visibility: visible;
         transition: opacity 1s, visibility 0s;
       }
-      #backButton.hidden span {
+      #backButton.hidden span, #beginButton.hidden span {
         opacity: 0;
         transition: opacity 1s, visibility 1.1s;
       }
-      #backButton span:hover {
+      #backButton span:hover, #beginButton span:hover, #beginButton span.loading {
         background: #002562;
+      }
+      #beginButton.hidden, #beginButton span.loading {
+        cursor: default;
+        pointer-events: none;
       }
 
       #ekibenBios, #ekibenIngredients {
@@ -268,7 +283,9 @@
       <canvas id="canvas" width=960 height=640></canvas>
       <canvas id="canvasMask" width=960 height=640></canvas>
       <canvas id="canvasBuffer" width=960 height=640></canvas>
-      <div id="cityName"><span class="hidden">Tokyo</span></div>
+      <div id="title"><span>Ekiben Tour</span></div>
+      <div id="cityName"><span class="hidden"></span></div>
+      <div id="beginButton" class="hidden"><span onclick="begin()">Begin!</span></div>
       <div id="backButton" class="hidden"><span onclick="to_map()">Back To Map</span></div>
       <div id="ekibenBios">
         <div id="beefDomannakaBio" class="docked">
