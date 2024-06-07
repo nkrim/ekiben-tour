@@ -1,3 +1,8 @@
+window.addEventListener('DOMContentLoaded', () => {
+    begin_button = document.getElementById('beginButton');
+    begin_button.classList.remove('hidden');
+});
+
 let loaded_images = 0;
 let num_images = 0;
 function imgload() {
@@ -37,7 +42,11 @@ window.onload = function() {
     }
 };
 
+let begin_hit = false;
 function begin() {
+    if (begin_hit)
+        return;
+    begin_hit = true;
     init();
 }
 

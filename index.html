@@ -109,7 +109,7 @@
       }
       #backButton.hidden span, #beginButton.hidden span {
         opacity: 0;
-        transition: opacity 1s, visibility 1.1s;
+        transition: opacity 1s 0.2s, visibility 1.1s;
       }
       #backButton span:hover, #beginButton span:hover {
         background: #002562;
@@ -289,7 +289,7 @@
       <canvas id="canvasBuffer" width=960 height=640></canvas>
       <div id="title"><span>Ekiben Tour</span></div>
       <div id="cityName"><span class="hidden"></span></div>
-      <div id="beginButton"><span class="loading" onclick="begin()">Loading images...</span></div>
+      <div id="beginButton" class="hidden"><span class="loading" onclick="begin()">Loading images...</span></div>
       <div id="backButton" class="hidden"><span onclick="to_map()">Back To Map</span></div>
       <div id="ekibenBios">
         <div id="beefDomannakaBio" class="docked">
